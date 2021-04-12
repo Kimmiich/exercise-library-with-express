@@ -1,8 +1,89 @@
 body {
+  box-sizing: border-box;
+  background: rgb(190, 218, 236);
+  margin: 0px auto;
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  width: 100vw;
+  font-family: "Raleway", sans-serif;
 }
 
-a {
-  color: #00B7FF;
+/*=== START PAGE ===*/
+
+.header {
+  width: 80%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
+
+h2 {
+  font-size: 1.8em;
+  letter-spacing: 0.2px;
+  font-family: "Oswald", sans-serif;
+  margin: 5px;
+}
+
+a.addBook {
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: white;
+  text-decoration: none;
+  background: rgb(10, 143, 231);
+  transition: all 0.5s linear;
+}
+
+a.addbook:hover {
+  box-shadow: 0px 0px 5px rgb(42, 109, 153);
+  background-color: rgb(42, 109, 153);
+}
+
+hr.rounded {
+  border-top: 5px solid rgba(29, 29, 29, 0.61);
+  border-width: 2.5px;
+  border-radius: 2px;
+  margin: 5px 20px;
+}
+
+section {
+  width: 80%;
+  margin: auto;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px white;
+  background-color: rgba(255, 255, 255, 0.555);
+}
+
+article {
+  background: rgba(246, 253, 253, 0.658);
+  border-radius: 5px;
+  padding: 3px 10px;
+  margin: 5px;
+}
+h3 {
+  margin: 1px;
+}
+
+.bookTitles {
+  padding: 6px;
+  color: black;
+  text-decoration: none;
+  transition: all 0.5s linear;
+}
+
+.bookTitles:hover {
+  font-size: 1.07em;
+}
+
+/*=== NEW BOOK FORM ===*/
+form {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+input {
+  width: 200px;
+}
+
+/*==== BOOK DETAILS ===*/

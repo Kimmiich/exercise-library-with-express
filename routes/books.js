@@ -10,7 +10,7 @@ let books = [
     id: 1,
   },
   {
-    title: " Städa hållbart med Ekotipset : husmorsknep och ekohacks",
+    title: " Städa hållbart med Ekotipset",
     author: "Ellinor Sirén",
     pages: 200,
     rented: false,
@@ -39,27 +39,32 @@ let books = [
   },
 ];
 
+let htmlHead = `<link rel="stylesheet" href="/stylesheets/style.css"></link>
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald&family=Raleway&display=swap" rel="stylesheet">`;
+
 /* GET users listing. */
 router.get("/", function (req, res, next) {
-  let printBooks = `<div> <h2>Kimmies bibliotek</h2>`;
+  let printBooks = `<title>Library</title>${htmlHead}
+    <section><header class="header"><h2>Kimmies bibliotek</h2><a href="/books/add" class="addBook">Lägg till ny bok</a></header><hr class="rounded">`;
 
   for (book in books) {
-    printBooks += `<h3><a href="/books/book/${books[book].id}">${books[book].title}</a> || ${books[book].author}</h3>`;
+    printBooks += `<article><h3><a class="bookTitles" href="/books/book/${books[book].id}">${books[book].title}</a> || ${books[book].author}</h3>`;
 
     if (books[book].rented == true) {
-      printBooks += `<p>Utlånad</p>`;
+      printBooks += `<p>Utlånad</p></article>`;
     } else if (books[book].rented == false) {
-      printBooks += `<button><a href="/books/book/${books[book].id}">Tillgänglig</a></button>`;
+      printBooks += `<button><a href="/books/book/${books[book].id}">Tillgänglig</a></button></article>`;
     }
   }
 
-  printBooks += `<div><a href="/books/add">Lägg till ny bok</a></div>`;
+  printBooks += `</section>`;
 
   res.send(printBooks);
 });
 
 router.get("/add", (req, res) => {
-  let addForm = `<div><h2>Lägg till en ny bok</h2>
+  let addForm = `<title>Library - New book</title>${htmlHead}<div><h2>Lägg till en ny bok</h2>
                 <form action="/books/add" method="post">
                   <input type="text" name="title" placeholder="Titel..">
                   <input type="text" name="author" placeholder="Författare..">
@@ -74,7 +79,7 @@ router.get("/add", (req, res) => {
 router.post("/add", (req, res) => {
   console.log(req.body);
 
-  let newBookId = books.lenght++;
+  let newBookId = books.length + 1;
 
   let newBook = {
     title: req.body.title,
@@ -85,6 +90,7 @@ router.post("/add", (req, res) => {
   };
 
   books.push(newBook);
+  console.log(books);
 
   res.redirect("/books");
 });
@@ -92,7 +98,7 @@ router.post("/add", (req, res) => {
 router.get("/book/:id", (req, res) => {
   let showBook = req.params.id;
 
-  let bookDetails = `<fieldset>`;
+  let bookDetails = `<title>Library - Book</title>${htmlHead}<fieldset>`;
 
   for (book in books) {
     if (books[book].id == showBook) {
@@ -102,9 +108,9 @@ router.get("/book/:id", (req, res) => {
                   <p>Antal sidor: ${books[book].pages}</p>`;
 
       if (books[book].rented == true) {
-        bookDetails += `<p>Utlånad</p>`;
+        bookDetails += `<p>Utlånad || <a href="/books/rent/${books[book].id}">Lämna tillbaka</a></p>`;
       } else if (books[book].rented == false) {
-        bookDetails += `<a href="/books">Låna</a>`;
+        bookDetails += `<a href="/books/rent/${books[book].id}">Låna</a>`;
       }
     }
   }
@@ -112,6 +118,23 @@ router.get("/book/:id", (req, res) => {
   bookDetails += `</fieldset>`;
 
   res.send(bookDetails);
+});
+
+router.get("/rent/:id", (req, res) => {
+  console.log(req.body);
+
+  let showBook = req.params.id;
+  for (book in books) {
+    if (books[book].id == showBook) {
+      if (books[book].rented == true) {
+        books[book].rented = false;
+      } else if (books[book].rented == false) {
+        books[book].rented = true;
+      }
+    }
+  }
+
+  res.redirect("/books");
 });
 
 module.exports = router;
