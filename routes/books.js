@@ -44,18 +44,16 @@ router.get("/", function (req, res, next) {
   let printBooks = `<div> <h2>Kimmies bibliotek</h2>`;
 
   for (book in books) {
-    printBooks += `<h3><a href="/book/:${books[book].id}">${books[book].title}</a> || ${books[book].author}</h3>`;
+    printBooks += `<h3><a href="/books/book/${books[book].id}">${books[book].title}</a> || ${books[book].author}</h3>`;
 
     if (books[book].rented == true) {
       printBooks += `<p>Utlånad</p>`;
     } else if (books[book].rented == false) {
-      printBooks += `<button><a href="/books/book/:${books[book].id}">Tillgänglig</a></button>`;
+      printBooks += `<button><a href="/books/book/${books[book].id}">Tillgänglig</a></button>`;
     }
   }
 
   printBooks += `<div><a href="/books/add">Lägg till ny bok</a></div>`;
-
-  console.log(books);
 
   res.send(printBooks);
 });
@@ -100,13 +98,13 @@ router.get("/book/:id", (req, res) => {
     if (books[book].id == showBook) {
       bookDetails += `
                   <legend>${books[book].title}</legend>
-                  <h4>${books[book].author}</h4>
-                  <p>${books[book].pages}</p>`;
+                  <p>Författare: ${books[book].author}</p>
+                  <p>Antal sidor: ${books[book].pages}</p>`;
 
       if (books[book].rented == true) {
         bookDetails += `<p>Utlånad</p>`;
       } else if (books[book].rented == false) {
-        bookDetails += `<button><a href="/books/:${books[book].id}">Låna/Lämna tillbaka</a></button>`;
+        bookDetails += `<a href="/books">Låna</a>`;
       }
     }
   }
